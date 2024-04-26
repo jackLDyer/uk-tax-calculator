@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="uk-tax-calculator",
-    version="0.0.1",
+    name="jackdyeruktaxcalculator",
+    version="0.0.4",
     author="Jack Dyer",
     author_email="jack.dyer387@gmail.com",
     description="UK Tax Calculator",
