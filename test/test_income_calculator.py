@@ -1,6 +1,6 @@
 from unittest import TestCase
 import pytest
-from jackdyeruktaxcalculator.income_calculator import TakeHome
+from jackdyeruktaxcalculator.uk_tax_calculator import UkTaxCalculator
 
 
 class TestInit(TestCase):
@@ -10,48 +10,48 @@ class TestInit(TestCase):
         deductions = 0
         student_loan_plan = 0
         with pytest.raises(AssertionError):
-            take_home = TakeHome(income, deductions, student_loan_plan)
+            take_home = UkTaxCalculator(income, deductions, student_loan_plan)
 
     def test_zero_income(self):
         income = 0
         deductions = 0
         student_loan_plan = 0
         with pytest.raises(AssertionError):
-            take_home = TakeHome(income, deductions, student_loan_plan)
+            take_home = UkTaxCalculator(income, deductions, student_loan_plan)
 
     def test_valid_income(self):
         income = 10000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
 
     def test_deductions_negative_value(self):
         income = 20000
         deductions = -500
         student_loan_plan = 0
         with pytest.raises(AssertionError):
-            take_home = TakeHome(income, deductions, student_loan_plan)
+            take_home = UkTaxCalculator(income, deductions, student_loan_plan)
 
     def test_deductions_greater_income_value(self):
         income = 20000
         deductions = 30000
         student_loan_plan = 0
         with pytest.raises(AssertionError):
-            take_home = TakeHome(income, deductions, student_loan_plan)
+            take_home = UkTaxCalculator(income, deductions, student_loan_plan)
 
     def test_student_loan_negative(self):
         income = 20000
         deductions = 0
         student_loan_plan = -1
         with pytest.raises(AssertionError):
-            take_home = TakeHome(income, deductions, student_loan_plan)
+            take_home = UkTaxCalculator(income, deductions, student_loan_plan)
 
     def test_student_loan_too_high(self):
         income = 20000
         deductions = 0
         student_loan_plan = 15
         with pytest.raises(AssertionError):
-            take_home = TakeHome(income, deductions, student_loan_plan)
+            take_home = UkTaxCalculator(income, deductions, student_loan_plan)
 
 
 class TestSetTaxFreeAllowance(TestCase):
@@ -60,7 +60,7 @@ class TestSetTaxFreeAllowance(TestCase):
         income = 10000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         assert take_home.tax_free_allowance == 12570
 
@@ -68,7 +68,7 @@ class TestSetTaxFreeAllowance(TestCase):
         income = 100000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         assert take_home.tax_free_allowance == 12570
 
@@ -76,7 +76,7 @@ class TestSetTaxFreeAllowance(TestCase):
         income = 110000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         assert take_home.tax_free_allowance == 7570
 
@@ -84,7 +84,7 @@ class TestSetTaxFreeAllowance(TestCase):
         income = 130000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         assert take_home.tax_free_allowance == 0
 
@@ -95,7 +95,7 @@ class TestSetIncomeTax(TestCase):
         income = 10000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
 
@@ -105,7 +105,7 @@ class TestSetIncomeTax(TestCase):
         income = 12570
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
 
@@ -115,7 +115,7 @@ class TestSetIncomeTax(TestCase):
         income = 20000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
 
@@ -125,7 +125,7 @@ class TestSetIncomeTax(TestCase):
         income = 50270
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
 
@@ -135,7 +135,7 @@ class TestSetIncomeTax(TestCase):
         income = 70000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
 
@@ -145,7 +145,7 @@ class TestSetIncomeTax(TestCase):
         income = 100000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
 
@@ -155,7 +155,7 @@ class TestSetIncomeTax(TestCase):
         income = 115000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
 
@@ -165,7 +165,7 @@ class TestSetIncomeTax(TestCase):
         income = 125140
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
 
@@ -175,7 +175,7 @@ class TestSetIncomeTax(TestCase):
         income = 200000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
 
@@ -185,7 +185,7 @@ class TestSetIncomeTax(TestCase):
         income = 200000
         deductions = 20000
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
 
@@ -195,7 +195,7 @@ class TestSetIncomeTax(TestCase):
         income = 200000
         deductions = 40000
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
 
@@ -205,7 +205,7 @@ class TestSetIncomeTax(TestCase):
         income = 200000
         deductions = 100000
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
 
@@ -218,7 +218,7 @@ class TestSetNationalInsurance(TestCase):
         income = 10000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_national_insurance()
 
         assert take_home.national_insurance == 0
@@ -227,7 +227,7 @@ class TestSetNationalInsurance(TestCase):
         income = 50000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_national_insurance()
 
         assert take_home.national_insurance == 3743.00
@@ -236,7 +236,7 @@ class TestSetNationalInsurance(TestCase):
         income = 50000
         deductions = 10000
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_national_insurance()
 
         assert take_home.national_insurance == 2743.00
@@ -245,7 +245,7 @@ class TestSetNationalInsurance(TestCase):
         income = 150000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_national_insurance()
 
         assert take_home.national_insurance == 5764.60
@@ -257,7 +257,7 @@ class TestSetStudentLoan(TestCase):
         income = 20000
         deductions = 0
         student_loan_plan = 0
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_student_loan()
 
         assert take_home.student_loan == 0
@@ -266,7 +266,7 @@ class TestSetStudentLoan(TestCase):
         income = 20000
         deductions = 0
         student_loan_plan = 1
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_student_loan()
 
         assert take_home.student_loan == 0
@@ -275,7 +275,7 @@ class TestSetStudentLoan(TestCase):
         income = 33000
         deductions = 0
         student_loan_plan = 1
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_student_loan()
 
         assert take_home.student_loan == 988.65
@@ -283,13 +283,13 @@ class TestSetStudentLoan(TestCase):
     # TO DO: add unit tests for all plans paying an amount and not paying
 
 
-class TestSetTakeHome(TestCase):
+class TestSetUkTaxCalculator(TestCase):
 
     def test_full(self):
         income = 200000
         deductions = 40000
         student_loan_plan = 2
-        take_home = TakeHome(income, deductions, student_loan_plan)
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan)
         take_home.set_tax_free_allowance()
         take_home.set_income_tax()
         take_home.set_national_insurance()
