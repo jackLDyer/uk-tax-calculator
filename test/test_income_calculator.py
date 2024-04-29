@@ -1,6 +1,6 @@
 from unittest import TestCase
 import pytest
-from jackdyeruktaxcalculator.uk_tax_calculator import UkTaxCalculator
+from jdtaxcalculator import UkTaxCalculator
 
 
 class TestInit(TestCase):
