@@ -1,4 +1,4 @@
-class TakeHome():
+class UkTaxCalculator():
     # This class is intended to calculate the deductions and take home pay of a person working in the UK based on their income and conditions
 
     tax_free_allowance_income_limit = 100000
