@@ -1,6 +1,6 @@
 from unittest import TestCase
 import pytest
-from source.income_calculator import TakeHome
+from jackdyeruktaxcalculator.income_calculator import TakeHome
 
 
 class TestInit(TestCase):
