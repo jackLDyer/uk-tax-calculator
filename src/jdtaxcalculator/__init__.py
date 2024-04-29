@@ -1,1 +1,1 @@
-from uk_tax_calculator import UkTaxCalculator as UkTaxCalculator
+from .uk_tax_calculator import UkTaxCalculator as UkTaxCalculator
