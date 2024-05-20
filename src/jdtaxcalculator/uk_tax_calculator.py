@@ -21,7 +21,7 @@ class UkTaxCalculator(object):
                               'conf', 'uk_tax_rules.yml')
         with open(conf_path, 'r') as config_file:
             full_config = yaml.load(config_file, Loader=yaml.FullLoader)
-        if not tax_year in full_config['tax_year']:
+        if tax_year not in full_config['tax_year']:
             raise ValueError('Invalid tax year')
         conf = full_config['tax_year'][tax_year]
 

@@ -11,8 +11,7 @@ class TestInit(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         with pytest.raises(ValueError):
-            take_home = UkTaxCalculator(
-                income, deductions, student_loan_plan, tax_year)
+            UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
 
     def test_zero_income(self):
         income = 0
@@ -20,16 +19,14 @@ class TestInit(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         with pytest.raises(ValueError):
-            take_home = UkTaxCalculator(
-                income, deductions, student_loan_plan, tax_year)
+            UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
 
     def test_valid_income(self):
         income = 10000
         deductions = 0
         student_loan_plan = 0
         tax_year = "24/25"
-        take_home = UkTaxCalculator(
-            income, deductions, student_loan_plan, tax_year)
+        UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
 
     def test_deductions_negative_value(self):
         income = 20000
@@ -37,8 +34,7 @@ class TestInit(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         with pytest.raises(ValueError):
-            take_home = UkTaxCalculator(
-                income, deductions, student_loan_plan, tax_year)
+            UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
 
     def test_deductions_greater_income_value(self):
         income = 20000
@@ -46,8 +42,7 @@ class TestInit(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         with pytest.raises(ValueError):
-            take_home = UkTaxCalculator(
-                income, deductions, student_loan_plan, tax_year)
+            UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
 
     def test_student_loan_negative(self):
         income = 20000
@@ -55,8 +50,7 @@ class TestInit(TestCase):
         student_loan_plan = -1
         tax_year = "24/25"
         with pytest.raises(ValueError):
-            take_home = UkTaxCalculator(
-                income, deductions, student_loan_plan, tax_year)
+            UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
 
     def test_student_loan_too_high(self):
         income = 20000
@@ -64,8 +58,7 @@ class TestInit(TestCase):
         student_loan_plan = 15
         tax_year = "24/25"
         with pytest.raises(ValueError):
-            take_home = UkTaxCalculator(
-                income, deductions, student_loan_plan, tax_year)
+            UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
 
 
 class TestSetTaxFreeAllowance(TestCase):
