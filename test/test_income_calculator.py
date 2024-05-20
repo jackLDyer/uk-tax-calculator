@@ -11,8 +11,7 @@ class TestInit(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         with pytest.raises(ValueError):
-            take_home = UkTaxCalculator(
-                income, deductions, student_loan_plan, tax_year)
+            UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
 
     def test_zero_income(self):
         income = 0
