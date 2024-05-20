@@ -5,14 +5,6 @@ from os import path
 class UkTaxCalculator(object):
     # Calculate the deductions and take home pay of a person working in the UK based on their income and conditions
 
-    def reset(self):
-        self.deductions = 0
-        self.deducted_income = 0
-        self.income_tax = [0, 0, 0]
-        self.national_insurance = 0
-        self.student_loan = 0
-        self.take_home = 0
-
     def get_config(self, student_loan_plan: int, tax_year: str):
         # Retrieves config for and validates tax year, subsequently validates student loan plan under tax year config
         conf_path = path.join(path.dirname(__file__),
@@ -39,7 +31,22 @@ class UkTaxCalculator(object):
             raise ValueError('Invalid student loan plan')
 
     def __init__(self, income: float, deductions: float, student_loan_plan: int, tax_year: str):
-        """Use student_loan_plan=0 if not on a student loan plan and tax_year as year_start/year_end e.g. '24/25'"""
+        """Use student_loan_plan=0 if not on a student loan plan and tax_year as year_start/year_end e.g. 24/25"""
+        self.tax_free_allowance = None
+        self.student_loan_rate = None
+        self.student_loan_threshold = None
+        self.ni_amounts = None
+        self.ni_bands = None
+        self.tax_amounts = None
+        self.tax_bands = None
+        self.tax_free_allowance_backoff_start = None
+        self.standard_tax_free_allowance = None
+        self.deductions = 0
+        self.deducted_income = 0
+        self.income_tax = [0, 0, 0]
+        self.national_insurance = 0
+        self.student_loan = 0
+        self.take_home = 0
         if not income > 0:
             raise ValueError('Income must be greater than zero')
         self.income = income
@@ -50,8 +57,6 @@ class UkTaxCalculator(object):
         self.deductions = deductions
         self.get_config(student_loan_plan, tax_year)
         self.student_loan_plan = student_loan_plan
-
-        self.reset()
         self.deducted_income = income - deductions
         self.set_tax_free_allowance()
         self.set_income_tax()
@@ -71,7 +76,7 @@ class UkTaxCalculator(object):
             self.tax_free_allowance = 0
 
     def set_income_tax(self):
-        # Add the tax free allowance to the tax bands
+        # Add the tax-free allowance to the tax bands
         tax_bands = [band + self.tax_free_allowance for band in self.tax_bands]
 
         tax_band_found = False
@@ -79,7 +84,7 @@ class UkTaxCalculator(object):
             if tax_band_found:
                 # Just take the maximum
                 self.income_tax[i] = (
-                    tax_bands[i + 1] - tax_bands[i]) * self.tax_amounts[i]
+                                             tax_bands[i + 1] - tax_bands[i]) * self.tax_amounts[i]
                 continue
             if tax_bands[i] >= self.deducted_income:
                 self.income_tax[i] = 0
@@ -95,15 +100,15 @@ class UkTaxCalculator(object):
                 # Final ni bracket to be handled differently to prevent index out of range
                 if self.ni_bands[i] < self.deducted_income:
                     national_insurance += self.ni_amounts[i] * (
-                        self.deducted_income - self.ni_bands[i])
+                            self.deducted_income - self.ni_bands[i])
             else:
                 if self.ni_bands[i] < self.deducted_income:
                     if self.ni_bands[i + 1] > self.deducted_income:
                         national_insurance += self.ni_amounts[i] * (
-                            self.deducted_income - self.ni_bands[i])
+                                self.deducted_income - self.ni_bands[i])
                     elif self.ni_bands[i + 1] <= self.deducted_income:
                         national_insurance += self.ni_amounts[i] * (
-                            self.ni_bands[i + 1] - self.ni_bands[i])
+                                self.ni_bands[i + 1] - self.ni_bands[i])
         self.national_insurance = round(national_insurance, 2)
 
     def set_student_loan(self):
@@ -116,5 +121,4 @@ class UkTaxCalculator(object):
                 over_threshold * self.student_loan_rate, 2)
 
     def set_take_home(self):
-        self.take_home = self.deducted_income - self.national_insurance - \
-            sum(self.income_tax) - self.student_loan
+        self.take_home = self.deducted_income - self.national_insurance - sum(self.income_tax) - self.student_loan
