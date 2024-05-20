@@ -3,8 +3,7 @@ from os import path
 
 
 class UkTaxCalculator(object):
-    # This class is intended to calculate the deductions and take home pay of a person working in the UK
-    # based on their income and conditions
+    # Calculate the deductions and take home pay of a person working in the UK based on their income and conditions
 
     def reset(self):
         self.deductions = 0
@@ -15,8 +14,7 @@ class UkTaxCalculator(object):
         self.take_home = 0
 
     def get_config(self, student_loan_plan: int, tax_year: str):
-        # Retrieves config for and validates tax year, subsequently validates student loan plan under tax
-        # year config
+        # Retrieves config for and validates tax year, subsequently validates student loan plan under tax year config
         conf_path = path.join(path.dirname(__file__),
                               'conf', 'uk_tax_rules.yml')
         with open(conf_path, 'r') as config_file:
@@ -41,6 +39,7 @@ class UkTaxCalculator(object):
             raise ValueError('Invalid student loan plan')
 
     def __init__(self, income: float, deductions: float, student_loan_plan: int, tax_year: str):
+        """Use student_loan_plan=0 if not on a student loan plan and tax_year as year_start/year_end e.g. '24/25'"""
         if not income > 0:
             raise ValueError('Income must be greater than zero')
         self.income = income
