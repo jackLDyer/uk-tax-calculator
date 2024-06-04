@@ -69,7 +69,6 @@ class TestSetTaxFreeAllowance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
         assert take_home.tax_free_allowance == 12570
 
     def test_at_threshold(self):
@@ -78,7 +77,6 @@ class TestSetTaxFreeAllowance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
         assert take_home.tax_free_allowance == 12570
 
     def test_in_threshold(self):
@@ -87,7 +85,6 @@ class TestSetTaxFreeAllowance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
         assert take_home.tax_free_allowance == 7570
 
     def test_above_threshold(self):
@@ -96,7 +93,6 @@ class TestSetTaxFreeAllowance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
         assert take_home.tax_free_allowance == 0
 
 
@@ -108,8 +104,6 @@ class TestSetIncomeTax(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
-        take_home.set_income_tax()
         assert take_home.income_tax == [0, 0, 0]
 
     def test_at_tax_allowance(self):
@@ -118,8 +112,6 @@ class TestSetIncomeTax(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
-        take_home.set_income_tax()
         assert take_home.income_tax == [0, 0, 0]
 
     def test_in_low_band(self):
@@ -128,8 +120,6 @@ class TestSetIncomeTax(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
-        take_home.set_income_tax()
         assert take_home.income_tax == [1486, 0, 0]
 
     def test_at_mid_band(self):
@@ -138,8 +128,6 @@ class TestSetIncomeTax(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
-        take_home.set_income_tax()
         assert take_home.income_tax == [7540, 0, 0]
 
     def test_in_mid_band(self):
@@ -148,8 +136,6 @@ class TestSetIncomeTax(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
-        take_home.set_income_tax()
         assert take_home.income_tax == [7540, 7892, 0]
 
     def test_at_income_limit(self):
@@ -158,8 +144,6 @@ class TestSetIncomeTax(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
-        take_home.set_income_tax()
         assert take_home.income_tax == [7540, 19892, 0]
 
     def test_in_income_limit(self):
@@ -168,8 +152,6 @@ class TestSetIncomeTax(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
-        take_home.set_income_tax()
         assert take_home.income_tax == [7540, 28892, 0]
 
     def test_at_high_band(self):
@@ -178,8 +160,6 @@ class TestSetIncomeTax(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
-        take_home.set_income_tax()
         assert take_home.income_tax == [7540, 34976, 0]
 
     def test_in_high_band(self):
@@ -188,8 +168,6 @@ class TestSetIncomeTax(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
-        take_home.set_income_tax()
         assert take_home.income_tax == [7540, 34976, 33687]
 
     def test_in_high_band_with_small_deduction(self):
@@ -198,8 +176,6 @@ class TestSetIncomeTax(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
-        take_home.set_income_tax()
         assert take_home.income_tax == [7540, 34976, 24687]
 
     def test_in_high_band_with_medium_deduction(self):
@@ -208,8 +184,6 @@ class TestSetIncomeTax(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
-        take_home.set_income_tax()
         assert take_home.income_tax == [7540, 34976, 15687]
 
     def test_in_high_band_with_large_deduction(self):
@@ -218,8 +192,6 @@ class TestSetIncomeTax(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_tax_free_allowance()
-        take_home.set_income_tax()
         assert take_home.income_tax == [7540, 19892, 0]
 
 
@@ -231,7 +203,6 @@ class TestSetNationalInsurance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_national_insurance()
         assert take_home.national_insurance == 0
 
     def test_in_high_band(self):
@@ -240,7 +211,6 @@ class TestSetNationalInsurance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_national_insurance()
         assert take_home.national_insurance == 3743.00
 
     def test_in_high_band_with_deductions(self):
@@ -249,7 +219,6 @@ class TestSetNationalInsurance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_national_insurance()
         assert take_home.national_insurance == 2743.00
 
     def test_massive(self):
@@ -258,7 +227,6 @@ class TestSetNationalInsurance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_national_insurance()
         assert take_home.national_insurance == 5764.60
 
 
@@ -270,7 +238,6 @@ class TestSetStudentLoan(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_student_loan()
         assert take_home.student_loan == 0
 
     def test_no_payback_plan1(self):
@@ -279,7 +246,6 @@ class TestSetStudentLoan(TestCase):
         student_loan_plan = 1
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_student_loan()
         assert take_home.student_loan == 0
 
     def test_student_loan_plan1(self):
@@ -288,10 +254,55 @@ class TestSetStudentLoan(TestCase):
         student_loan_plan = 1
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
-        take_home.set_student_loan()
         assert take_home.student_loan == 988.65
 
-    # TO DO: add unit tests for all plans paying an amount and not paying
+    def test_no_payback_plan2(self):
+        income = 25000
+        deductions = 0
+        student_loan_plan = 2
+        tax_year = "24/25"
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
+        assert take_home.student_loan == 0
+
+    def test_student_loan_plan2(self):
+        income = 40000
+        deductions = 0
+        student_loan_plan = 2
+        tax_year = "24/25"
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
+        assert take_home.student_loan == 1143.45
+
+    def test_no_payback_plan4(self):
+        income = 26000
+        deductions = 0
+        student_loan_plan = 4
+        tax_year = "24/25"
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
+        assert take_home.student_loan == 0
+
+    def test_student_loan_plan4(self):
+        income = 45000
+        deductions = 0
+        student_loan_plan = 4
+        tax_year = "24/25"
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
+        assert take_home.student_loan == 1560.6
+
+    def test_no_payback_plan5(self):
+        income = 23000
+        deductions = 0
+        student_loan_plan = 5
+        tax_year = "24/25"
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
+        assert take_home.student_loan == 0
+
+    def test_student_loan_plan5(self):
+        income = 30000
+        deductions = 0
+        student_loan_plan = 5
+        tax_year = "24/25"
+        take_home = UkTaxCalculator(income, deductions, student_loan_plan, tax_year)
+        assert take_home.student_loan == 450
 
 
 class TestTakeHome(TestCase):
