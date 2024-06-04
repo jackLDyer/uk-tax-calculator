@@ -29,7 +29,8 @@ class UkTaxCalculator(object):
         else:
             raise ValueError('Invalid student loan plan')
 
-    def __init__(self, income: float, deductions: float, student_loan_plan: int, tax_year: str):
+    def __init__(self, income: float, deductions: float, taxable_benefits: float, student_loan_plan: int,
+                 tax_year: str):
         """Use student_loan_plan=0 if not on a student loan plan and tax_year as year_start/year_end e.g. 24/25"""
         self.tax_free_allowance = None
         self.student_loan_rate = None
@@ -54,9 +55,12 @@ class UkTaxCalculator(object):
         if not income > deductions:
             raise ValueError('Deductions must be lesser than income')
         self.deductions = deductions
+        if not taxable_benefits >= 0:
+            raise ValueError('Taxable benefits must not be negative')
+        self.deducted_income = income - deductions
+        self.deducted_total_award = self.deducted_income + taxable_benefits
         self.get_config(student_loan_plan, tax_year)
         self.student_loan_plan = student_loan_plan
-        self.deducted_income = income - deductions
         self.set_tax_free_allowance()
         self.set_income_tax()
         self.set_national_insurance()
@@ -64,10 +68,10 @@ class UkTaxCalculator(object):
         self.set_take_home()
 
     def set_tax_free_allowance(self):
-        if self.deducted_income <= self.tax_free_allowance_backoff_start:
+        if self.deducted_total_award <= self.tax_free_allowance_backoff_start:
             self.tax_free_allowance = self.standard_tax_free_allowance
             return
-        tax_free_reduction = (self.deducted_income - self.tax_free_allowance_backoff_start) / 2
+        tax_free_reduction = (self.deducted_total_award - self.tax_free_allowance_backoff_start) / 2
         if tax_free_reduction < self.standard_tax_free_allowance:
             self.tax_free_allowance = self.standard_tax_free_allowance - tax_free_reduction
         else:
@@ -83,24 +87,24 @@ class UkTaxCalculator(object):
                 # Just take the maximum
                 self.income_tax[i] = (tax_bands[i + 1] - tax_bands[i]) * self.tax_amounts[i]
                 continue
-            if tax_bands[i] >= self.deducted_income:
+            if tax_bands[i] >= self.deducted_total_award:
                 self.income_tax[i] = 0
                 continue
             tax_band_found = True
-            self.income_tax[i] = (self.deducted_income - tax_bands[i]) * self.tax_amounts[i]
+            self.income_tax[i] = (self.deducted_total_award - tax_bands[i]) * self.tax_amounts[i]
 
     def set_national_insurance(self):
         national_insurance = 0
         for i in reversed(range(len(self.ni_bands))):
             if i + 1 >= len(self.ni_bands):
                 # Final ni bracket to be handled differently to prevent index out of range
-                if self.ni_bands[i] < self.deducted_income:
-                    national_insurance += self.ni_amounts[i] * (self.deducted_income - self.ni_bands[i])
+                if self.ni_bands[i] < self.deducted_total_award:
+                    national_insurance += self.ni_amounts[i] * (self.deducted_total_award - self.ni_bands[i])
             else:
-                if self.ni_bands[i] < self.deducted_income:
-                    if self.ni_bands[i + 1] > self.deducted_income:
-                        national_insurance += self.ni_amounts[i] * (self.deducted_income - self.ni_bands[i])
-                    elif self.ni_bands[i + 1] <= self.deducted_income:
+                if self.ni_bands[i] < self.deducted_total_award:
+                    if self.ni_bands[i + 1] > self.deducted_total_award:
+                        national_insurance += self.ni_amounts[i] * (self.deducted_total_award - self.ni_bands[i])
+                    elif self.ni_bands[i + 1] <= self.deducted_total_award:
                         national_insurance += self.ni_amounts[i] * (self.ni_bands[i + 1] - self.ni_bands[i])
         self.national_insurance = round(national_insurance, 2)
 
@@ -108,7 +112,7 @@ class UkTaxCalculator(object):
         if self.student_loan_plan == 0:
             return
 
-        over_threshold = self.deducted_income - self.student_loan_threshold
+        over_threshold = self.deducted_total_award - self.student_loan_threshold
         if over_threshold > 0:
             self.student_loan = round(over_threshold * self.student_loan_rate, 2)
 
