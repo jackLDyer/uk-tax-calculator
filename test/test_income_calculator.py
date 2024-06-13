@@ -86,7 +86,7 @@ class TestSetTaxFreeAllowance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, taxable_benefits, student_loan_plan, tax_year)
-        assert take_home.tax_free_allowance == 12570
+        assert take_home.personal_allowance == 12570
 
     def test_at_threshold(self):
         income = 100000
@@ -95,7 +95,7 @@ class TestSetTaxFreeAllowance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, taxable_benefits, student_loan_plan, tax_year)
-        assert take_home.tax_free_allowance == 12570
+        assert take_home.personal_allowance == 12570
 
     def test_in_threshold(self):
         income = 110000
@@ -104,7 +104,7 @@ class TestSetTaxFreeAllowance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, taxable_benefits, student_loan_plan, tax_year)
-        assert take_home.tax_free_allowance == 7570
+        assert take_home.personal_allowance == 7570
 
     def test_above_threshold(self):
         income = 130000
@@ -113,7 +113,7 @@ class TestSetTaxFreeAllowance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, taxable_benefits, student_loan_plan, tax_year)
-        assert take_home.tax_free_allowance == 0
+        assert take_home.personal_allowance == 0
 
     def test_taxable_benefit(self):
         income = 100000
@@ -122,7 +122,7 @@ class TestSetTaxFreeAllowance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, taxable_benefits, student_loan_plan, tax_year)
-        assert take_home.tax_free_allowance == 0
+        assert take_home.personal_allowance == 0
 
 
 class TestSetIncomeTax(TestCase):
