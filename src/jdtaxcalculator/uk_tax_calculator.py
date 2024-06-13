@@ -71,37 +71,32 @@ class UkTaxCalculator(object):
         else:
             self.personal_allowance = 0
 
-    def __set_income_tax(self):
-        self.income_tax = [0, 0, 0]
-        # Add the tax-free allowance to the tax bands
-        tax_bands = [band + self.personal_allowance for band in self.__tax_bands]
+    @staticmethod
+    def __get_banded_tax_deductions(bands: list, amounts: list, deducted_total_award) -> list:
+        tax_deductions = [0] * len(bands)
 
-        tax_band_found = False
-        for i in reversed(range(len(tax_bands))):
-            if tax_band_found:
-                # Just take the maximum
-                self.income_tax[i] = (tax_bands[i + 1] - tax_bands[i]) * self.__tax_amounts[i]
-                continue
-            if tax_bands[i] >= self.__deducted_total_award:
-                self.income_tax[i] = 0
-                continue
-            tax_band_found = True
-            self.income_tax[i] = (self.__deducted_total_award - tax_bands[i]) * self.__tax_amounts[i]
+        # Iterate backwards over the tax bands, once band is found take the maximum value for the band
+        in_previous_band = False
+        for i in reversed(range(len(bands))):
+            if in_previous_band:
+                tax_deductions[i] = (bands[i + 1] - bands[i]) * amounts[i]
+            elif bands[i] >= deducted_total_award:
+                tax_deductions[i] = 0
+            else:
+                in_previous_band = True
+                tax_deductions[i] = (deducted_total_award - bands[i]) * amounts[i]
+
+        return tax_deductions
+
+    def __set_income_tax(self):
+        personal_allowance_tax_bands = [band + self.personal_allowance for band in self.__tax_bands]
+        self.income_tax = self.__get_banded_tax_deductions(personal_allowance_tax_bands, self.__tax_amounts,
+                                                           self.__deducted_total_award)
 
     def __set_national_insurance(self):
-        national_insurance = 0
-        for i in reversed(range(len(self.__ni_bands))):
-            if i + 1 >= len(self.__ni_bands):
-                # Final ni bracket to be handled differently to prevent index out of range
-                if self.__ni_bands[i] < self.__deducted_total_award:
-                    national_insurance += self.__ni_amounts[i] * (self.__deducted_total_award - self.__ni_bands[i])
-            else:
-                if self.__ni_bands[i] < self.__deducted_total_award:
-                    if self.__ni_bands[i + 1] > self.__deducted_total_award:
-                        national_insurance += self.__ni_amounts[i] * (self.__deducted_total_award - self.__ni_bands[i])
-                    elif self.__ni_bands[i + 1] <= self.__deducted_total_award:
-                        national_insurance += self.__ni_amounts[i] * (self.__ni_bands[i + 1] - self.__ni_bands[i])
-        self.national_insurance = round(national_insurance, 2)
+        national_insurance_banded = self.__get_banded_tax_deductions(self.__ni_bands, self.__ni_amounts,
+                                                                     self.__deducted_total_award)
+        self.national_insurance = round(sum(national_insurance_banded), 2)
 
     def __set_student_loan(self):
         if self.__student_loan_plan == 0:
