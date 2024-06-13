@@ -52,7 +52,7 @@ class UkTaxCalculator(object):
 
         # Validate student loan plan from config
         self.__get_config(student_loan_plan, tax_year)
-        self.student_loan_plan = student_loan_plan
+        self.__student_loan_plan = student_loan_plan
 
         # Run methods
         self.__set_personal_allowance()
@@ -104,7 +104,7 @@ class UkTaxCalculator(object):
         self.national_insurance = round(national_insurance, 2)
 
     def __set_student_loan(self):
-        if self.student_loan_plan == 0:
+        if self.__student_loan_plan == 0:
             self.student_loan = 0
             return
 
