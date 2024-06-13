@@ -263,7 +263,7 @@ class TestSetNationalInsurance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, taxable_benefits, student_loan_plan, tax_year)
-        assert take_home.national_insurance == 743
+        assert take_home.national_insurance == 594.40
 
     def test_in_high_band(self):
         income = 50000
@@ -272,7 +272,7 @@ class TestSetNationalInsurance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, taxable_benefits, student_loan_plan, tax_year)
-        assert take_home.national_insurance == 3743.00
+        assert take_home.national_insurance == 2994.40
 
     def test_in_high_band_with_deductions(self):
         income = 50000
@@ -281,7 +281,7 @@ class TestSetNationalInsurance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, taxable_benefits, student_loan_plan, tax_year)
-        assert take_home.national_insurance == 2743.00
+        assert take_home.national_insurance == 2194.40
 
     def test_massive(self):
         income = 150000
@@ -290,16 +290,16 @@ class TestSetNationalInsurance(TestCase):
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, taxable_benefits, student_loan_plan, tax_year)
-        assert take_home.national_insurance == 5764.60
+        assert take_home.national_insurance == 5010.60
 
     def test_taxable_benefits(self):
-        income = 40000
+        income = 50000
         deductions = 10000
         taxable_benefits = 10000
         student_loan_plan = 0
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, taxable_benefits, student_loan_plan, tax_year)
-        assert take_home.national_insurance == 2743.00
+        assert take_home.national_insurance == 2994.40
 
 
 class TestSetStudentLoan(TestCase):
@@ -404,4 +404,5 @@ class TestTakeHome(TestCase):
         student_loan_plan = 2
         tax_year = "24/25"
         take_home = UkTaxCalculator(income, deductions, taxable_benefits, student_loan_plan, tax_year)
-        assert take_home.take_home == 83888.95
+        print(sum(take_home.income_tax), take_home.national_insurance, take_home.student_loan)
+        assert take_home.take_home == 84642.95

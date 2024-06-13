@@ -7,7 +7,7 @@ tax_year:
       amounts: [0.2, 0.4, 0.45]
     national_insurance:
       bands: [12570, 50270]
-      amounts: [0.10, 0.02]
+      amounts: [0.08, 0.02]
     student_loan_plans:
       1:
         threshold: 22015
