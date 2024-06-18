@@ -1,23 +1,24 @@
 tax_year:
   24/25:
+    personal_allowance:
+      max: 12570
+      income_limit: 100000
     income_tax:
-      tax_free_allowance: 12570
-      allowance_backoff_start: 100000
       bands: [0, 37700, 125140]
       amounts: [0.2, 0.4, 0.45]
     national_insurance:
       bands: [12570, 50270]
       amounts: [0.08, 0.02]
-    student_loan_plans:
-      1:
-        threshold: 22015
-        rate: 0.09
-      2:
-        threshold: 27295
-        rate: 0.09
-      4:
-        threshold: 27660
-        rate: 0.09
-      5:
-        threshold: 25000
-        rate: 0.09
+student_loan_plan:
+  1:
+    threshold: 24990
+    rate: 0.09
+  2:
+    threshold: 27295
+    rate: 0.09
+  4:
+    threshold: 31395
+    rate: 0.09
+  5:
+    threshold: 25000
+    rate: 0.09
