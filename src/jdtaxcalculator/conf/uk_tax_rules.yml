@@ -11,13 +11,13 @@ tax_year:
       amounts: [0.08, 0.02]
 student_loan_plan:
   1:
-    threshold: 22015
+    threshold: 24990
     rate: 0.09
   2:
     threshold: 27295
     rate: 0.09
   4:
-    threshold: 27660
+    threshold: 31395
     rate: 0.09
   5:
     threshold: 25000

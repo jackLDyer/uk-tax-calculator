@@ -1,5 +1,6 @@
 import yaml
 from os import path
+from math import trunc as truncate
 
 
 class UkTaxCalculator(object):
@@ -46,8 +47,8 @@ class UkTaxCalculator(object):
                                                        max_personal_allowance)
         tax_bands = [band + personal_allowance for band in tax_bands]
         banded_income_tax = self.__get_banded_deductions(tax_bands, tax_amounts, deducted_total_award)
-        banded_national_insurance = self.__get_banded_deductions(ni_bands, ni_amounts, deducted_total_award)
-        student_loan = self.__student_loan(deducted_total_award, student_loan_threshold, student_loan_rate)
+        banded_national_insurance = self.__get_banded_deductions(ni_bands, ni_amounts, deducted_income)
+        student_loan = self.__student_loan(deducted_income, student_loan_threshold, student_loan_rate)
         take_home = self.__take_home(deducted_income, sum(banded_national_insurance), sum(banded_income_tax),
                                      student_loan)
 
@@ -69,7 +70,7 @@ class UkTaxCalculator(object):
                              max_personal_allowance: float) -> float:
         if deducted_total_award <= personal_allowance_income_limit:
             return max_personal_allowance
-        tax_free_reduction = (deducted_total_award - personal_allowance_income_limit) / 2
+        tax_free_reduction = round((deducted_total_award - personal_allowance_income_limit) / 2, 2)
         if tax_free_reduction < max_personal_allowance:
             return max_personal_allowance - tax_free_reduction
         else:
@@ -83,22 +84,23 @@ class UkTaxCalculator(object):
         in_previous_band = False
         for i in reversed(range(len(bands))):
             if in_previous_band:
-                tax_deductions[i] = (bands[i + 1] - bands[i]) * amounts[i]
+                tax_deductions[i] = round((bands[i + 1] - bands[i]) * amounts[i], 2)
             elif bands[i] >= deducted_total_award:
                 tax_deductions[i] = 0
             else:
                 in_previous_band = True
-                tax_deductions[i] = (deducted_total_award - bands[i]) * amounts[i]
+                tax_deductions[i] = round((deducted_total_award - bands[i]) * amounts[i], 2)
 
         return tax_deductions
 
     @staticmethod
-    def __student_loan(deducted_total_award: float, student_loan_threshold: float, student_loan_rate: float) -> float:
-        if deducted_total_award - student_loan_threshold > 0:
-            return round((deducted_total_award - student_loan_threshold) * student_loan_rate, 2)
+    def __student_loan(deducted_income: float, student_loan_threshold: float, student_loan_rate: float) -> float:
+        # Loan repayments are rounded down to nearest pound per pay period, assumption here that most are paid monthly
+        if deducted_income - student_loan_threshold > 0:
+            return truncate((deducted_income - student_loan_threshold) / 12 * student_loan_rate) * 12
         else:
             return 0
 
     @staticmethod
     def __take_home(deducted_income: float, national_insurance: float, income_tax: float, student_loan: float) -> float:
-        return deducted_income - national_insurance - income_tax - student_loan
+        return round(deducted_income - national_insurance - income_tax - student_loan, 2)
